@@ -1,8 +1,66 @@
 $(document).ready(function () {
+    $('#tabla-vehiculos').hide();
     loadPersonas();
 });
 
-//Funcion para cargar los datos de la tabla
+var showingVehicles = false;
+$('#toggle-PV').click(function() {
+    if (showingVehicles) {
+        // Si estaba mostrando vehículos, ahora mostraremos personas
+        $('#tabla-personas').show();
+        $('#tabla-vehiculos').hide();
+        $('#guardar').text('Registrar persona');
+        $(this).text('Mostrar vehículos');
+        loadPersonas();
+    } else {
+        // Si estaba mostrando personas, ahora mostraremos vehículos
+        $('#tabla-personas').hide();
+        $('#tabla-vehiculos').show();
+        $('#guardar').text('Registrar vehiculo');
+        $(this).text('Mostrar personas');
+        // Ejecutar la función loadVehiculos
+        loadVehiculos();
+    }
+    // Cambiar el estado actual del botón
+    showingVehicles = !showingVehicles;
+});
+
+//Funcion para cargar los datos de vehiculos
+function loadVehiculos() {
+    $.ajax({
+        //Tipo de consulta
+        type: 'get',
+        //URI
+        url: 'http://localhost:8010/vehiculo/listar',
+        //Establecer tipo de contenido
+        contentType: 'application/json; charset=utf-8',
+        //Condicion en caso de exito
+        success: function (response) {
+            var cuerpo_tabla = '';
+            for (let i = 0; i < response.obj.length; i++) {
+                //Inyectar HTML a tabla
+                cuerpo_tabla += '<tr class="text-center">' +
+                    '<td>' + response.obj[i].matricula + '</td>' +
+                    '<td>' + response.obj[i].marca + '</td>' +
+                    '<td>' + response.obj[i].modelo + '</td>' +
+                    '<td>' + response.obj[i].tipo + '</td>' +
+                    '<td>' + response.obj[i].velocidad + '</td>' +
+                    '<td>' + response.obj[i].precio + '</td>' +
+                    '<td>' + '<button type="button" class="btn btn-warning" id="boton-editar-vehiculo" data="' + response.obj[i].matricula + '">Editar</button>' + '</td>' +
+                    '<td>' + '<button type="button" class="btn btn-danger" id="boton-eliminar-vehiculo" data="' + response.obj[i].matricula + '">Eliminar</button>' + '</td>' +
+                    '</tr>';
+            }
+            //console.log(cuerpo_tabla);
+            $('#lista-vehiculos').html(cuerpo_tabla);
+        },
+        //Condicion en caso de error
+        error: function () {
+            alert('Error al cargar tabla');
+        }
+    });
+};
+
+//Funcion para cargar los datos de personas
 function loadPersonas() {
     $.ajax({
         //Tipo de consulta
@@ -23,8 +81,8 @@ function loadPersonas() {
                     '<td>' + response.obj[i].ciudad + '</td>' +
                     '<td>' + response.obj[i].edad + '</td>' +
                     '<td>' + '<button type="button" class="btn btn-info" id="boton-vehiculos" data="' + response.obj[i].curp + '">Vehiculos</button>' + '</td>' +
-                    '<td>' + '<button type="button" class="btn btn-warning" id="boton-editar" data="' + response.obj[i].curp + '">Editar</button>' + '</td>' +
-                    '<td>' + '<button type="button" class="btn btn-danger" id="boton-eliminar" data="' + response.obj[i].curp + '">Eliminar</button>' + '</td>' +
+                    '<td>' + '<button type="button" class="btn btn-warning" id="boton-editar-persona" data="' + response.obj[i].curp + '">Editar</button>' + '</td>' +
+                    '<td>' + '<button type="button" class="btn btn-danger" id="boton-eliminar-persona" data="' + response.obj[i].curp + '">Eliminar</button>' + '</td>' +
                     '</tr>';
             }
             //console.log(cuerpo_tabla);
@@ -37,10 +95,15 @@ function loadPersonas() {
     });
 }
 
-//Event listener para NavBar button 'abrir-guardar'
-$('.abrir-guardar').click(function () {
-    //Show Modal 'modal-guardar'
-    $('#modal-guardar').modal('show');
+//Event listener para NavBar button 'guardar'
+$('#guardar').click(function () {
+    if(showingVehicles){
+        //Show Modal 'modal-guardar-vehiculo
+        $('#modal-guardar-vehiculo').modal('show');
+    }else{
+        //Show Modal 'modal-guardar-persona'
+        $('#modal-guardar-persona').modal('show');
+    }
 });
 
 //Event listener para boton 'vehiculos'
@@ -72,7 +135,7 @@ $('#lista-personas').on('click', '#boton-vehiculos', function () {
                     }
                 }
             }
-            $('#lista-vehiculos').html(cuerpo_tabla);
+            $('#lista-vehiculos-modal').html(cuerpo_tabla);
         },
         //Condicion en caso de error
         error: function () {
@@ -81,8 +144,8 @@ $('#lista-personas').on('click', '#boton-vehiculos', function () {
     }); 
 });
 
-//Event listener para button 'boton-guardar'
-$('#boton-guardar-modal').click(function () {
+//Event listener para button 'boton-guardar-persona'
+$('#boton-guardar-persona').click(function () {
     let curp = $('#curpInput').val();
     let nombre = $('#nombreInput').val();
     let apellido = $('#apellidoInput').val();
@@ -119,7 +182,7 @@ $('#boton-guardar-modal').click(function () {
                     alert(response.mensaje);
                 } else {
                     //alert(response.mensaje);
-                    $('#modal-guardar').modal('hide');
+                    $('#modal-guardar-persona').modal('hide');
                     loadPersonas();
                 }
             },
@@ -130,8 +193,63 @@ $('#boton-guardar-modal').click(function () {
     }
 });
 
+//Event listener para button 'boton-guardar-vehiculo'
+$('#boton-guardar-vehiculo').click(function () {
+    let matricula = $('#matriculaInput').val();
+    let marca = $('#marcaInput').val();
+    let modelo = $('#modeloInput').val();
+    let tipo = $('#tipoInput').val();
+    let velocidad = $('#velocidadInput').val();
+    let precio = $('#precioInput').val();
+    let curp = $('#curpInputV').val();
+
+    if (matricula == '') {
+        alert("CURP es obligatorio");
+    } else if (marca == '') {
+        alert('Nombre es requerido');
+    } else if (modelo == '') {
+        alert("Apellido es obligatorio");
+    } else if (tipo == '') {
+        alert('Ciudad es obligatorio')
+    } else if (velocidad == '') {
+        alert('Edad es obligatorio');
+    } else if (precio == '') {
+        alert('Precio es obligatorio');
+    }else {
+        var yayson = {
+            "matricula": matricula,
+            "marca": modelo,
+            "modelo": modelo,
+            "tipo": tipo,
+            "velocidad": velocidad,
+            "precio": precio,
+            "persona": curp ? { "curp" : curp} : null
+        };
+        console.log(JSON.stringify(yayson));
+
+        $.ajax({
+            type: 'post',
+            url: 'http://localhost:8010/vehiculo/guardar',
+            data: JSON.stringify(yayson),
+            contentType: 'application/json; charset=utf-8',
+            success: function (response) {
+                if (response.success == false) {
+                    alert(response.mensaje);
+                } else {
+                    alert(response.mensaje);
+                    $('#modal-guardar-vehiculo').modal('hide');
+                    loadVehiculos();
+                }
+            },
+            error: function () {
+                alert("Error al registrar en la base de datos")
+            }
+        });
+    }
+});
+
 //Event listener para obtener datos de Persona a editar
-$('#lista-personas').on('click', '#boton-editar', function () {
+$('#lista-personas').on('click', '#boton-editar-persona', function () {
     let curp = $(this).attr('data');
     console.log('Data es: ' + curp);
 
@@ -148,16 +266,17 @@ $('#lista-personas').on('click', '#boton-editar', function () {
             $('#apellidoEdit').val(respuesta.obj.apellido);
             $('#ciudadEdit').val(respuesta.obj.ciudad);
             $('#edadEdit').val(respuesta.obj.edad);
-            $('#modal-editar').modal('show');
+            $('#modal-editar-persona').modal('show');
         },
         error: function () {
             alert("Error al recuperar datos");
-            $('#modal-editar').modal('hide');
+            $('#modal-editar-persona').modal('hide');
         }
     });
 });
 
-$('#boton-editar-modal').click(function(){
+//Event listener para editar persona
+$('#boton-modal-editarPersona').click(function(){
     let curp = $('#curpEdit').val();
     let nombre = $('#nombreEdit').val().trim();
     let apellido = $('#apellidoEdit').val().trim();
@@ -187,7 +306,7 @@ $('#boton-editar-modal').click(function(){
             data: JSON.stringify(yayson),
             contentType : 'application/json; charset=utf-8',
             success: function(respuesta) {
-                $('#modal-editar').modal('hide');
+                $('#modal-editar-persona').modal('hide');
                 alert(respuesta.mensaje);
                 loadPersonas();
             },
@@ -198,7 +317,90 @@ $('#boton-editar-modal').click(function(){
     }
 });
 
-$('#lista-personas').on('click','#boton-eliminar', function() {
+//Event listener para obtener datos de Vehiculo a editar
+$('#lista-vehiculos').on('click', '#boton-editar-vehiculo', function () {
+    let matricula = $(this).attr('data');
+    console.log('Data es: ' + matricula);
+
+    let yayson = { "matricula": matricula };
+
+    $.ajax({
+        type: 'post',
+        url: 'http://localhost:8010/vehiculo/buscar',
+        data: JSON.stringify(yayson),
+        contentType: 'application/json; charset=utf-8',
+        success: function (respuesta) {
+            console.log(respuesta);
+            $('#matriculaEdit').val(respuesta.obj.matricula);
+            $('#marcaEdit').val(respuesta.obj.marca);
+            $('#modeloEdit').val(respuesta.obj.modelo);
+            $('#tipoEdit').val(respuesta.obj.tipo);
+            $('#velocidadEdit').val(respuesta.obj.velocidad);
+            $('#precioEdit').val(respuesta.obj.precio);
+            $('#curpEditV').val(respuesta.obj.persona? respuesta.obj.persona.curp : '');
+            $('#modal-editar-vehiculo').modal('show');
+        },
+        error: function () {
+            alert("Error al recuperar datos");
+            $('#modal-editar-vehiculo').modal('hide');
+        }
+    });
+});
+
+
+//Event listener para editar vehiculo
+$('#boton-modal-editarVehiculo').click(function(){
+    let matricula = $('#matriculaEdit').val();
+    let marca = $('#marcaEdit').val().trim();
+    let modelo = $('#modeloEdit').val().trim();
+    let tipo = $('#tipoEdit').val().trim();
+    let velocidad = $('#velocidadEdit').val().trim();
+    let precio = $('#precioEdit').val().trim();
+    //Este campo puede ser un CURP o 'vacio'
+    let curp = $('#curpEditV').val().trim();
+
+    if (matricula == '') {
+        alert('Matricula es obligatorio');
+    } else if (marca == '') {
+        alert("Marca es obligatorio");
+    } else if (modelo == '') {
+        alert('Modelo es obligatorio')
+    } else if (tipo == '') {
+        alert('Tipo es obligatorio');
+    } else if (velocidad == '') {
+        alert('Velocidad es obligatorio');
+    } else if (precio == '') {
+        alert('Precio es obligatorio');
+    }else {
+        var yayson = {
+            "matricula": matricula,
+            "marca": marca,
+            "modelo": modelo,
+            "tipo": tipo,
+            "velocidad": velocidad,
+            "precio": precio,
+            "persona": curp ? { "curp" : curp} : null
+        };
+        console.log(JSON.stringify(yayson));
+        $.ajax({
+            type:'post',
+            url:"http://localhost:8010/vehiculo/editar",
+            data: JSON.stringify(yayson),
+            contentType : 'application/json; charset=utf-8',
+            success: function(respuesta) {
+                $('#modal-editar-vehiculo').modal('hide');
+                alert(respuesta.mensaje);
+                loadVehiculos();
+            },
+            error:function() {
+                alert('Error al editar vehiculo.');
+            }
+        });
+    }
+});
+
+//Event listener para eliminar persona
+$('#lista-personas').on('click','#boton-eliminar-persona', function() {
     let curp = $(this).attr('data');
     console.log("Data es: "+curp);
 
@@ -211,12 +413,35 @@ $('#lista-personas').on('click','#boton-eliminar', function() {
             data: JSON.stringify(yayson),
             contentType : 'application/json; charset=utf-8',
             success: function(respuesta) {
-                $('#modal-editar').modal('hide');
                 alert(respuesta.mensaje);
                 loadPersonas();
             },
             error:function() {
                 alert('Error al eliminar persona.');
+            }
+        });
+    }
+});
+
+//Event listener para eliminar vehiculo
+$('#lista-vehiculos').on('click','#boton-eliminar-vehiculo', function() {
+    let matricula = $(this).attr('data');
+    console.log("Data es: "+matricula);
+
+    let yayson = { "matricula":matricula };
+
+    if(confirm("¿Deseas borrar este vehiculo del registro?")){
+        $.ajax({
+            type:'post',
+            url:"http://localhost:8010/vehiculo/eliminar",
+            data: JSON.stringify(yayson),
+            contentType : 'application/json; charset=utf-8',
+            success: function(respuesta) {
+                alert(respuesta.mensaje);
+                loadVehiculos();
+            },
+            error:function() {
+                alert('Error al eliminar vehiculo.');
             }
         });
     }

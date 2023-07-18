@@ -12,11 +12,29 @@
 <body>
     <nav class="navbar bg-body-tertiary">
         <div class="container-fluid justify-content-start">
-            <button class="btn btn-outline-success abrir-guardar" type="submit">Registrar persona</button>
+            <button id="guardar" class="btn btn-outline-success abrir-guardar" type="submit">Registrar persona</button>
+            <button id="toggle-PV" class="btn btn-outline-info mostrar-vehiculos" value=vehiculos type="submit">Mostrar
+                vehiculos</button>
         </div>
     </nav>
 
-    <table class="table table-light">
+    <table class="table table-light" id="tabla-vehiculos">
+        <thead>
+            <tr class="text-center">
+                <th>Matricula</th>
+                <th>Marca</th>
+                <th>Modelo</th>
+                <th>Tipo</th>
+                <th>Velocidad</th>
+                <th>Precio</th>
+                <th colspan="2">Opciones</th>
+            </tr>
+        </thead>
+        <tbody id="lista-vehiculos">
+        </tbody>
+    </table>
+
+    <table class="table table-light" id="tabla-personas">
         <thead>
             <tr class="text-center">
                 <th>CURP</th>
@@ -31,8 +49,8 @@
         </tbody>
     </table>
 
-    <!-- Modal Guardar -->
-    <div class="modal fade" id="modal-guardar" tabindex="-1" aria-labelledby="modal-guardar" aria-hidden="true">
+    <!-- Modal Guardar Personas-->
+    <div class="modal fade" id="modal-guardar-persona" tabindex="-1" aria-labelledby="modal-guardar" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -41,7 +59,7 @@
                 </div>
                 <div class="modal-body">
                     <form>
-                        <!-- Formulario para agregar un libro -->
+                        <!-- Formulario para agregar una persona -->
                         <div class="mb-3">
                             <label for="curpInput" class="form-label">CURP</label>
                             <input type="text" class="form-control" id="curpInput" aria-describedby="curpHelp">
@@ -67,7 +85,58 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                    <button type="button" class="btn btn-primary" id="boton-guardar-modal">Guardar persona</button>
+                    <button type="button" class="btn btn-primary" id="boton-guardar-persona">Guardar persona</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Guardar Vehiculos -->
+    <div class="modal fade" id="modal-guardar-vehiculo" tabindex="-1" aria-labelledby="modal-guardar"
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="modal-buscarTitle">Registra un vehiculo</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <!-- Formulario para agregar un vehiculo -->
+                        <div class="mb-3">
+                            <label for="matriculaInput" class="form-label">Matricula</label>
+                            <input type="text" class="form-control" id="matriculaInput" aria-describedby="curpHelp">
+                            <div id="folioDisclaimer" class="form-text">La matricula es única e irrepetible</div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="marcaInput" class="form-label">Marca</label>
+                            <input type="text" class="form-control" id="marcaInput">
+                        </div>
+                        <div class="mb-3">
+                            <label for="modeloInput" class="form-label">Modelo</label>
+                            <input type="text" class="form-control" id="modeloInput">
+                        </div>
+                        <div class="mb-3">
+                            <label for="tipoInput" class="form-label">Tipo</label>
+                            <input type="text" class="form-control" id="tipoInput">
+                        </div>
+                        <div class="mb-3">
+                            <label for="velocidadInput" class="form-label">Velocidad</label>
+                            <input type="text" class="form-control" id="velocidadInput">
+                        </div>
+                        <div class="mb-3">
+                            <label for="precioInput" class="form-label">Precio</label>
+                            <input type="text" class="form-control" id="precioInput">
+                        </div>
+                        <div class="mb-3">
+                            <label for="curpInputV" class="form-label">CURP de dueño</label>
+                            <input type="text" class="form-control" id="curpInputV">
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                    <button type="button" class="btn btn-primary" id="boton-guardar-vehiculo">Guardar vehiculo</button>
                 </div>
             </div>
         </div>
@@ -93,7 +162,7 @@
                                 <th>Precio</th>
                             </tr>
                         </thead>
-                        <tbody id="lista-vehiculos">
+                        <tbody id="lista-vehiculos-modal">
                         </tbody>
                     </table>
                 </div>
@@ -101,8 +170,9 @@
         </div>
     </div>
 
-    <!-- Modal Editar -->
-    <div class="modal fade" id="modal-editar" tabindex="-1" aria-labelledby="modal-editar" aria-hidden="true">
+    <!-- Modal Editar persona -->
+    <div class="modal fade" id="modal-editar-persona" tabindex="-1" aria-labelledby="modal-editar-persona"
+        aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -111,33 +181,86 @@
                 </div>
                 <div class="modal-body">
                     <form>
-                       <!-- Formulario para editar un libro -->
-                       <div class="mb-3">
-                        <label for="curpEdit" class="form-label">CURP</label>
-                        <input type="text" class="form-control" id="curpEdit" aria-describedby="curpHelp" disabled>
-                        <div id="folioDisclaimer" class="form-text">El CURP es único e irrepetible</div>
-                    </div>
-                    <div class="mb-3">
-                        <label for="nombreEdit" class="form-label">Nombre</label>
-                        <input type="text" class="form-control" id="nombreEdit">
-                    </div>
-                    <div class="mb-3">
-                        <label for="apellidoEdit" class="form-label">Apellido</label>
-                        <input type="text" class="form-control" id="apellidoEdit">
-                    </div>
-                    <div class="mb-3">
-                        <label for="ciudadEdit" class="form-label">Ciudad</label>
-                        <input type="text" class="form-control" id="ciudadEdit">
-                    </div>
-                    <div class="mb-3">
-                        <label for="edadEdit" class="form-label">Edad</label>
-                        <input type="text" class="form-control" id="edadEdit">
-                    </div>
+                        <!-- Formulario para editar una persona -->
+                        <div class="mb-3">
+                            <label for="curpEdit" class="form-label">CURP</label>
+                            <input type="text" class="form-control" id="curpEdit" aria-describedby="curpHelp" disabled>
+                            <div id="folioDisclaimer" class="form-text">El CURP es único e irrepetible</div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="nombreEdit" class="form-label">Nombre</label>
+                            <input type="text" class="form-control" id="nombreEdit">
+                        </div>
+                        <div class="mb-3">
+                            <label for="apellidoEdit" class="form-label">Apellido</label>
+                            <input type="text" class="form-control" id="apellidoEdit">
+                        </div>
+                        <div class="mb-3">
+                            <label for="ciudadEdit" class="form-label">Ciudad</label>
+                            <input type="text" class="form-control" id="ciudadEdit">
+                        </div>
+                        <div class="mb-3">
+                            <label for="edadEdit" class="form-label">Edad</label>
+                            <input type="text" class="form-control" id="edadEdit">
+                        </div>
                     </form>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                    <button type="button" class="btn btn-primary" id="boton-editar-modal">Editar persona</button>
+                    <button type="button" class="btn btn-primary" id="boton-modal-editarPersona">Editar persona</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Editar vehiculo-->
+    <div class="modal fade" id="modal-editar-vehiculo" tabindex="-1" aria-labelledby="modal-editar-vehiculo"
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="modal-">Editor de vehiculo</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <!-- Formulario para editar un vehiculo -->
+                        <div class="mb-3">
+                            <label for="matriculaEdit" class="form-label">Matricula</label>
+                            <input type="text" class="form-control" id="matriculaEdit" aria-describedby="curpHelp"
+                                disabled>
+                            <div id="folioDisclaimer" class="form-text">La matricula es única e irrepetible</div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="marcaEdit" class="form-label">Marca</label>
+                            <input type="text" class="form-control" id="marcaEdit">
+                        </div>
+                        <div class="mb-3">
+                            <label for="modeloEdit" class="form-label">Modelo</label>
+                            <input type="text" class="form-control" id="modeloEdit">
+                        </div>
+                        <div class="mb-3">
+                            <label for="tipoEdit" class="form-label">Tipo</label>
+                            <input type="text" class="form-control" id="tipoEdit">
+                        </div>
+                        <div class="mb-3">
+                            <label for="velocidadEdit" class="form-label">Velocidad</label>
+                            <input type="text" class="form-control" id="velocidadEdit">
+                        </div>
+                        <div class="mb-3">
+                            <label for="precioEdit" class="form-label">Precio</label>
+                            <input type="text" class="form-control" id="precioEdit">
+                        </div>
+                        <div class="mb-3">
+                            <label for="curpEditV" class="form-label">CURP de dueño</label>
+                            <input type="text" class="form-control" id="curpEditV">
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                    <button type="button" class="btn btn-primary" id="boton-modal-editarVehiculo">Editar
+                        vehiculo</button>
                 </div>
             </div>
         </div>
