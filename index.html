@@ -1,0 +1,328 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Persona - Vehiculo</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+</head>
+
+<body>
+    <nav class="navbar bg-body-tertiary">
+        <div class="container-fluid justify-content-start">
+            <button id="guardar" class="btn btn-outline-success" type="submit">Registrar gimnasio</button>
+            <button id="toggle-GC" class="btn btn-outline-info mostrar-clientes" type="submit">Mostrar
+                clientes</button>
+            <input type="text" id="buscar-ciudad" class="" placeholder="Buscar por ciudad">
+    </nav>
+
+    <table class="table table-light" id="tabla-clientes">
+        <thead>
+            <tr class="text-center">
+                <th>CURP</th>
+                <th>Nombre</th>
+                <th>Apellido</th>
+                <th>Membresia</th>
+                <th>Pago</th>
+                <th>Fecha de nacimiento</th>
+                <th colspan="4">Opciones</th>
+            </tr>
+        </thead>
+        <tbody id="lista-clientes">
+        </tbody>
+    </table>
+
+    <table class="table table-light" id="tabla-gimnasios">
+        <thead>
+            <tr class="text-center">
+                <th>Numero de sucursal</th>
+                <th>Ciudad</th>
+                <th>Colonia</th>
+                <th>Calle</th>
+                <th>Antiguedad</th>
+                <th>Ganacia Total</th>
+                <th colspan="3">Opciones</th>
+            </tr>
+        </thead>
+        <tbody id="lista-gimnasios">
+        </tbody>
+    </table>
+
+    <!-- Modal Guardar cliente-->
+    <div class="modal fade" id="modal-guardar-cliente" tabindex="-1" aria-labelledby="modal-guardar" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="modal-buscarTitle">Registra a una cliente</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <!-- Formulario para agregar una cliente -->
+                        <div class="mb-3">
+                            <label for="curp-input" class="form-label">CURP</label>
+                            <input type="text" class="form-control" id="curp-input" aria-describedby="curpHelp">
+                            <div id="curp-disclaimer" class="form-text">El CURP es único e irrepetible</div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="nombre-input" class="form-label">Nombre</label>
+                            <input type="text" class="form-control" id="nombre-input">
+                        </div>
+                        <div class="mb-3">
+                            <label for="apellido-input" class="form-label">Apellido</label>
+                            <input type="text" class="form-control" id="apellido-input">
+                        </div>
+                        <div class="mb-3">
+                            <label for="membresia-input" class="form-label">Membresia</label>
+                            <input type="text" class="form-control" id="membresia-input">
+                        </div>
+                        <div class="mb-3">
+                            <label for="pago-input" class="form-label">Pago </label>
+                            <input type="text" class="form-control" id="pago-input">
+                        </div>
+                        <div class="mb-3">
+                            <label for="dob-input" class="form-label" placeholder="1900-01-01">Fecha de nacimiento </label>
+                            <input type="text" class="form-control" id="dob-input">
+                            <div id="curp-disclaimer" class="form-text">Ingresar en formato: yyyy-MM-dd</div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                    <button type="button" class="btn btn-primary" id="boton-guardar-cliente">Guardar cliente</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Guardar gimnasiio -->
+    <div class="modal fade" id="modal-guardar-gimnasio" tabindex="-1" aria-labelledby="modal-guardar"
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="modal-buscarTitle">Registra un gimnasio</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <!-- Formulario para agregar un gimnasio -->
+                        <div class="mb-3">
+                            <label for="id-input" class="form-label">Numero de sucursal</label>
+                            <input type="text" class="form-control" id="id-input" aria-describedby="curpHelp">
+                            <div id="folioDisclaimer" class="form-text">Este numero es único e irrepetible</div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="ciudad-input" class="form-label">Ciudad</label>
+                            <input type="text" class="form-control" id="ciudad-input">
+                        </div>
+                        <div class="mb-3">
+                            <label for="colonia-input" class="form-label">Colonia</label>
+                            <input type="text" class="form-control" id="colonia-input">
+                        </div>
+                        <div class="mb-3">
+                            <label for="calle-input" class="form-label">Calle</label>
+                            <input type="text" class="form-control" id="calle-input">
+                        </div>
+                        <div class="mb-3">
+                            <label for="antiguedad-input" class="form-label">Antiguedad</label>
+                            <input type="text" class="form-control" id="antiguedad-input">
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                    <button type="button" class="btn btn-primary" id="boton-guardar-gimnasio">Guardar gimnasio</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal clientes -->
+    <div class="modal fade" id="modal-clientes" tabindex="-1" aria-labelledby="modal-clientes" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="modal-clientesTitle">Clientes del gimnasio</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <table class="table table-light">
+                    <thead>
+                        <tr class="text-center">
+                            <th>CURP</th>
+                            <th>Nombre</th>
+                            <th>Apellido</th>
+                            <th>Membresia</th>
+                            <th>Pago</th>
+                            <th>Fecha de nacimiento</th>
+                        </tr>
+                    </thead>
+                    <tbody id="lista-clientes-modal">
+                    </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Gimnasios -->
+    <div class="modal fade" id="modal-gimnasios" tabindex="-1" aria-labelledby="modal-gimnasios" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="modal-clientesTitle">Gimnasios del cliente</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <table class="table table-light">
+                        <thead>
+                            <tr class="text-center">
+                                <th>Numero de sucursal</th>
+                                <th>Ciudad</th>
+                                <th>Colonia</th>
+                                <th>Calle</th>
+                                <th>Antiguedad</th>
+                            </tr>
+                        </thead>
+                        <tbody id="lista-gimnasios-modal">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Agregar gimnasio a cliente -->
+    <div class="modal fade" id="modal-agregar-gimnasio" tabindex="-1" aria-labelledby="modal-agregar-gimnasio"
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="modal-buscarTitle">Registra un gimnasio</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <!-- Formulario para agregar gimnasio a un cliente -->
+                        <div class="mb-3">
+                            <label for="gymId-input" class="form-label">Numero de sucursal</label>
+                            <input type="text" class="form-control" id="gymId-input" aria-describedby="curpHelp">
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                    <button type="button" class="btn btn-primary" id="boton-modal-agregar-gimnasio">Agregar gimnasio</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Editar cliente -->
+    <div class="modal fade" id="modal-editar-cliente" tabindex="-1" aria-labelledby="modal-editar-cliente"
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="modal-">Editor de cliente</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <!-- Formulario para editar una cliente -->
+                        <div class="mb-3">
+                            <label for="curp-edit" class="form-label">CURP</label>
+                            <input type="text" class="form-control" id="curp-edit" aria-describedby="curpHelp" disabled>
+                            <div id="curp-disclaimer" class="form-text">El CURP es único e irrepetible</div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="nombre-edit" class="form-label">Nombre</label>
+                            <input type="text" class="form-control" id="nombre-edit">
+                        </div>
+                        <div class="mb-3">
+                            <label for="apellido-edit" class="form-label">Apellido</label>
+                            <input type="text" class="form-control" id="apellido-edit">
+                        </div>
+                        <div class="mb-3">
+                            <label for="membresia-edit" class="form-label">Membresia</label>
+                            <input type="text" class="form-control" id="membresia-edit">
+                        </div>
+                        <div class="mb-3">
+                            <label for="pago-edit" class="form-label">Pago </label>
+                            <input type="text" class="form-control" id="pago-edit">
+                        </div>
+                        <div class="mb-3">
+                            <label for="dob-edit" class="form-label">Fecha de nacimiento </label>
+                            <input type="date" class="form-control" id="dob-edit">
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                    <button type="button" class="btn btn-primary" id="boton-modal-editar-cliente">Editar cliente</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Editar gimnasio-->
+    <div class="modal fade" id="modal-editar-gimnasio" tabindex="-1" aria-labelledby="modal-editar-gimnasio"
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="modal-">Editor de gimnasio</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <!-- Formulario para editar un gimnasio -->
+                        <div class="mb-3">
+                            <label for="id-edit" class="form-label">Numero de sucursal</label>
+                            <input type="text" class="form-control" id="id-edit" aria-describedby="curpHelp" disabled>
+                            <div id="folioDisclaimer" class="form-text">Este numero es único e irrepetible</div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="ciudad-edit" class="form-label">Ciudad</label>
+                            <input type="text" class="form-control" id="ciudad-edit">
+                        </div>
+                        <div class="mb-3">
+                            <label for="colonia-edit" class="form-label">Colonia</label>
+                            <input type="text" class="form-control" id="colonia-edit">
+                        </div>
+                        <div class="mb-3">
+                            <label for="calle-edit" class="form-label">Calle</label>
+                            <input type="text" class="form-control" id="calle-edit">
+                        </div>
+                        <div class="mb-3">
+                            <label for="antiguedad-edit" class="form-label">Antiguedad</label>
+                            <input type="text" class="form-control" id="antiguedad-edit">
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                    <button type="button" class="btn btn-primary" id="boton-modal-editar-gimnasio">Editar
+                        gimnasio</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+        integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"
+        integrity="sha384-fbbOQedDUMZZ5KreZpsbe1LCZPVmfTnH7ois6mU1QK+m14rQ1l2bGBq41eYeM/fS"
+        crossorigin="anonymous"></script>
+    <script src="functions.js"></script>
+</body>
+
+</html>
