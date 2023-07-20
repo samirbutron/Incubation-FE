@@ -1,0 +1,363 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Persona - Vehiculo</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+</head>
+
+<body>
+    <nav class="navbar bg-body-tertiary">
+        <div class="container-fluid justify-content-start">
+            <button id="guardar" class="btn btn-outline-success" type="submit">Registrar plataforma</button>
+            <button id="toggle" class="btn btn-outline-info" type="submit">Mostrar
+                series</button>
+            <button id="buscarPcmE" class="btn btn-outline-info" type="submit"> PcmE</button>
+            <button id="buscarSemP" class="btn btn-outline-info" type="submit"> SemP</button>
+            <input id="buscarProductora" placeholder="Buscar por productora"/>
+            <input id="posteriorAFecha" type="date"/>
+            <input id="seriesLanzadasAño"  type="number"/>
+        </div>
+    </nav>
+
+    <table class="table table-light table-striped table-bordered" id="tabla-series">
+        <thead>
+            <tr class="text-center">
+                <th>Id</th>
+                <th>Titulo</th>
+                <th>Productora</th>
+                <th>Temporadas</th>
+                <th>Episodios</th>
+                <th>Fecha de Lanzamiento</th>
+                <th>Plataformas</th>
+                <th colspan="4">Opciones</th>
+            </tr>
+        </thead>
+        <tbody id="lista-series">
+        </tbody>
+    </table>
+
+    <table class="table table-light table-striped table-bordered" id="tabla-plataformas">
+        <thead>
+            <tr class="text-center">
+                <th>Id</th>
+                <th>Titulo</th>
+                <th>Fecha de Apertura</th>
+                <th>Ganancias</th>
+                <th>Pais de Origen</th>
+                <th>Series</th>
+                <th colspan="4">Opciones</th>
+            </tr>
+        </thead>
+        <tbody id="lista-plataformas">
+        </tbody>
+    </table>
+
+    <!-- Modal Guardar serie-->
+    <div class="modal fade" id="modal-guardar-serie" tabindex="-1" aria-labelledby="modal-guardar" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="modal-buscarTitle">Registra a una serie</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <!-- Formulario para agregar una serie -->
+                        <div class="mb-3">
+                            <label for="idSerie-input" class="form-label">Id</label>
+                            <input type="text" class="form-control" id="idSerie-input" aria-describedby="idHelp">
+                            <div id="id-disclaimer" class="form-text">El ID es único e irrepetible</div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="titulo-input" class="form-label">Titulo</label>
+                            <input type="text" class="form-control" id="titulo-input">
+                        </div>
+                        <div class="mb-3">
+                            <label for="productora-input" class="form-label">Productora</label>
+                            <input type="text" class="form-control" id="productora-input">
+                        </div>
+                        <div class="mb-3">
+                            <label for="temporada-input" class="form-label">Temporadas</label>
+                            <input type="number" class="form-control" id="temporada-input">
+                        </div>
+                        <div class="mb-3">
+                            <label for="episodios-input" class="form-label">Episodios </label>
+                            <input type="number" class="form-control" id="episodios-input">
+                        </div>
+                        <div class="mb-3">
+                            <label for="fechaLanzamiento-input" class="form-label" placeholder="1900-01-01">Fecha de Lanzamiento
+                            </label>
+                            <input type="date" class="form-control" id="fechaLanzamiento-input">
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                    <button type="button" class="btn btn-primary" id="boton-guardar-serie">Guardar serie</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Guardar plataforma -->
+    <div class="modal fade" id="modal-guardar-plataforma" tabindex="-1" aria-labelledby="modal-guardar"
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="modal-buscarTitle">Registra un plataforma</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <!-- Formulario para agregar un plataforma -->
+                        <div class="mb-3">
+                            <label for="idPlataforma-input" class="form-label">Numero de identificacion</label>
+                            <input type="number" class="form-control" id="idPlataforma-input" aria-describedby="idHelp">
+                            <div id="folioDisclaimer" class="form-text">Este numero es único e irrepetible</div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="nombre-input" class="form-label">Nombre</label>
+                            <input type="text" class="form-control" id="nombre-input">
+                        </div>
+                        <div class="mb-3">
+                            <label for="fechaApertura-input" class="form-label">Fecha de Apertura</label>
+                            <input type="date" class="form-control" id="fechaApertura-input">
+                        </div>
+                        <div class="mb-3">
+                            <label for="ganancias-input" class="form-label">Ganancias</label>
+                            <input type="number" class="form-control" id="ganancias-input">
+                        </div>
+                        <div class="mb-3">
+                            <label for="paisOrigen-input" class="form-label">Pais de Origen</label>
+                            <input type="text" class="form-control" id="paisOrigen-input">
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                    <button type="button" class="btn btn-primary" id="boton-guardar-plataforma">Guardar
+                        plataforma</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal series -->
+    <div class="modal fade" id="modal-series" tabindex="-1" aria-labelledby="modal-series" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="modal-seriesTitle">Series de la plataforma</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <table class="table table-light">
+                        <thead>
+                            <tr class="text-center">
+                                <th>Id</th>
+                                <th>Titulo</th>
+                                <th>Productora</th>
+                                <th>Temporadas</th>
+                                <th>Episodios</th>
+                                <th>Fecha de Lanzamiento</th>
+                            </tr>
+                        </thead>
+                        <tbody id="lista-series-modal">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal plataformas -->
+    <div class="modal fade" id="modal-plataformas" tabindex="-1" aria-labelledby="modal-plataformas" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="modal-seriesTitle">Plataformas de la serie</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <table class="table table-light">
+                        <thead>
+                            <tr class="text-center">
+                                <th>Id</th>
+                                <th>titulo</th>
+                                <th>Fecha de Apertura</th>
+                                <th>Ganancias</th>
+                                <th>Pais de Origen</th>
+                            </tr>
+                        </thead>
+                        <tbody id="lista-plataformas-modal">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Agregar serie a plataforma -->
+    <div class="modal fade" id="modal-agregar-serie" tabindex="-1" aria-labelledby="modal-agregar-plataforma"
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="modal-buscarTitle">Agrega serie con Id a esta plataforma</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <!-- Formulario para agregar plataforma a un serie -->
+                        <div class="mb-3">
+                            <label for="serieId-agregar-input" class="form-label">Identificador de serie</label>
+                            <input type="text" class="form-control" id="serieId-agregar-input" aria-describedby="idHelp">
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                    <button type="button" class="btn btn-primary" id="boton-modal-agregar-serie">Agregar
+                        plataforma</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Modal Quitar serie a plataforma -->
+    <div class="modal fade" id="modal-quitar-serie" tabindex="-1" aria-labelledby="modal-quitar-serie"
+            aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="modal-buscarTitle">Quitar serie de platafaforma</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form>
+                            <!-- Formulario para agregar plataforma a un serie -->
+                            <div class="mb-3">
+                                <label for="serieId-quitar-input" class="form-label">Identificador de plataforma</label>
+                                <input type="text" class="form-control" id="serieId-quitar-input" aria-describedby="idHelp">
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                        <button type="button" class="btn btn-primary" id="boton-modal-quitar-serie">Quitar serie</button>
+                    </div>
+                </div>
+            </div>
+    </div>
+
+    <!-- Modal Editar serie -->
+    <div class="modal fade" id="modal-editar-serie" tabindex="-1" aria-labelledby="modal-editar-serie"
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="modal-">Editor de serie</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <!-- Formulario para editar una serie -->
+                        <div class="mb-3">
+                            <label for="idSerie-edit" class="form-label">id</label>
+                            <input type="text" class="form-control" id="idSerie-edit" aria-describedby="idHelp" disabled>
+                            <div id="id-disclaimer" class="form-text">El id es único e irrepetible</div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="titulo-edit" class="form-label">Titulo</label>
+                            <input type="text" class="form-control" id="titulo-edit">
+                        </div>
+                        <div class="mb-3">
+                            <label for="productora-edit" class="form-label">Productora</label>
+                            <input type="text" class="form-control" id="productora-edit">
+                        </div>
+                        <div class="mb-3">
+                            <label for="temporadas-edit" class="form-label">Temporadas</label>
+                            <input type="text" class="form-control" id="temporadas-edit">
+                        </div>
+                        <div class="mb-3">
+                            <label for="episodios-edit" class="form-label">Episodios </label>
+                            <input type="text" class="form-control" id="episodios-edit">
+                        </div>
+                        <div class="mb-3">
+                            <label for="fechaLanzamiento-edit" class="form-label">Fecha de Lanzamiento </label>
+                            <input type="date" class="form-control" id="fechaLanzamiento-edit">
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                    <button type="button" class="btn btn-primary" id="boton-modal-editar-serie">Editar serie</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Editar plataforma-->
+    <div class="modal fade" id="modal-editar-plataforma" tabindex="-1" aria-labelledby="modal-editar-plataforma"
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="modal-">Editor de plataforma</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <!-- Formulario para editar un plataforma -->
+                        <div class="mb-3">
+                            <label for="idPlataforma-edit" class="form-label">Numero de sucursal</label>
+                            <input type="text" class="form-control" id="idPlataforma-edit" aria-describedby="idHelp" disabled>
+                            <div id="folioDisclaimer" class="form-text">Este numero es único e irrepetible</div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="nombre-edit" class="form-label">nombre</label>
+                            <input type="text" class="form-control" id="nombre-edit">
+                        </div>
+                        <div class="mb-3">
+                            <label for="fechaApertura-edit" class="form-label">fechaApertura</label>
+                            <input type="date" class="form-control" id="fechaApertura-edit">
+                        </div>
+                        <div class="mb-3">
+                            <label for="ganancias-edit" class="form-label">ganancias</label>
+                            <input type="text" class="form-control" id="ganancias-edit">
+                        </div>
+                        <div class="mb-3">
+                            <label for="paisOrigen-edit" class="form-label">paisOrigen</label>
+                            <input type="text" class="form-control" id="paisOrigen-edit">
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                    <button type="button" class="btn btn-primary" id="boton-modal-editar-plataforma">Editar
+                        plataforma</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+        integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"
+        integrity="sha384-fbbOQedDUMZZ5KreZpsbe1LCZPVmfTnH7ois6mU1QK+m14rQ1l2bGBq41eYeM/fS"
+        crossorigin="anonymous"></script>
+    <script src="functions.js"></script>
+</body>
+
+</html>
