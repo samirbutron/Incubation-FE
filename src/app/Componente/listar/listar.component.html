@@ -1,0 +1,34 @@
+<div class="card">
+  <div class="card-header">
+    <h2>Libros en registro</h2>
+  </div>
+  <div class="card-body">
+      <table class="table table-striped">
+        <thead class="text-center">
+          <tr>
+            <th>Folio</th>
+            <th>Titulo</th>
+            <th>Autor</th>
+            <th>Editorial</th>
+            <th>Genero</th>
+            <th>Precio</th>
+            <th>Paginas</th>
+          </tr>
+        </thead>
+        <tbody class="text-center table-striped" id="lista-libros">
+          <tr *ngFor="let l of libros">
+            <!-- Interpolamos los datos en cada una de las casillas -->
+            <td>{{l.folio}}</td>
+            <td>{{l.titulo}}</td>
+            <td>{{l.autor}}</td>
+            <td>{{l.editorial}}</td>
+            <td>{{l.genero}}</td>
+            <td>{{l.precio}}</td>
+            <td>{{l.paginas}}</td>
+            <td><button type="button" class="btn btn-outline-warning" (click)="Editar(l)">Editar</button></td>
+            <td><button type="button" class="btn btn-outline-danger" (click)="Eliminar(l)">Eliminar</button></td>
+          </tr>
+        </tbody>
+      </table>
+  </div>
+</div>

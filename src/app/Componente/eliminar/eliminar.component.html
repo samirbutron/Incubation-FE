@@ -1,0 +1,41 @@
+
+<div class="card">
+  <div class="card-header">
+    <h2>Eliminar libro</h2>
+  </div>
+  <div class="card-body">
+    <form>
+      <div class="mb-3">
+        <label for="folio" class="form-label">Folio</label>
+        <input type="text" class="form-control" id="folio" name="folio" [(ngModel)]="libro.folio" disabled>
+        <div id="emailHelp" class="form-text">El folio es único para cada libro</div>
+      </div>
+      <div class="mb-3">
+        <label for="titulo" class="form-label">Titulo</label>
+        <input type="text" class="form-control" id="titulo" name="titulo" [(ngModel)]="libro.titulo" disabled>
+      </div>
+      <div class="mb-3">
+        <label for="autor" class="form-label">Autor</label>
+        <input type="text" class="form-control" id="autor" name="autor" [(ngModel)]="libro.autor" disabled>
+      </div>
+      <div class="mb-3">
+        <label for="editorial" class="form-label">Editorial</label>
+        <input type="text" class="form-control" id="editorial" name="editorial" [(ngModel)]="libro.editorial" disabled>
+      </div>
+      <div class="mb-3">
+        <label for="genero" class="form-label">Genero</label>
+        <input type="text" class="form-control" id="genero" name="genero" [(ngModel)]="libro.genero" disabled>
+      </div>
+      <div class="mb-3">
+        <label for="precio" class="form-label">Precio</label>
+        <input type="number" class="form-control" id="precio" name="precio" [(ngModel)]="libro.precio" disabled>
+      </div>
+      <div class="mb-3">
+        <label for="paginas" class="form-label">Paginas</label>
+        <input type="text" class="form-control" id="paginas" name="paginas" [(ngModel)]="libro.paginas" disabled="">
+      </div>
+      <button type="submit" class="btn btn-outline-danger" (click)="Eliminar()">Eliminar libro</button>
+    </form>
+
+  </div>
+</div>
