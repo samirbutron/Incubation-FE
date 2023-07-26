@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "Libros": {
+    "Farmacias-Farmacos": {
       "projectType": "application",
       "schematics": {},
       "root": "",
@@ -13,7 +13,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/libros",
+            "outputPath": "dist/farmacias-farmacos",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": [
@@ -60,10 +60,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "Libros:build:production"
+              "browserTarget": "Farmacias-Farmacos:build:production"
             },
             "development": {
-              "browserTarget": "Libros:build:development"
+              "browserTarget": "Farmacias-Farmacos:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -71,7 +71,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "Libros:build"
+            "browserTarget": "Farmacias-Farmacos:build"
           }
         },
         "test": {

@@ -1,0 +1,36 @@
+<div class="card">
+  <div class="card-header">
+      <h2>Edicion de Farmacia</h2>
+  </div>
+  <div class="card-body">
+    <form>
+      <div class="mb-3">
+        <label for="id" class="form-label">ID</label>
+        <input type="text" class="form-control" id="id" name="id" [(ngModel)]="farmaco.id" disabled>
+        <div id="idHelp" class="form-text">El ID es único para cada farmaco</div>
+      </div>
+      <div class="mb-3">
+        <label for="nombre" class="form-label">Nombre</label>
+        <input type="text" class="form-control" id="nombre" name="nombre" [(ngModel)]="farmaco.nombre">
+      </div>
+      <div class="mb-3">
+        <label for="marca" class="form-label">Marca</label>
+        <input type="text" class="form-control" id="marca" name="marca" [(ngModel)]="farmaco.marca">
+      </div>
+      <div class="mb-3">
+        <label for="stock" class="form-label">Stock</label>
+        <input type="number" class="form-control" id="stock" name="stock" [(ngModel)]="farmaco.stock">
+      </div>
+      <div class="mb-3">
+        <label for="precio" class="form-label">Precio</label>
+        <input type="number" class="form-control" id="precio" name="precio" [(ngModel)]="farmaco.precio">
+      </div>
+      <div class="mb-3">
+        <label for="caducidad" class="form-label">Caducidad</label>
+        <input type="date" class="form-control" id="caducidad" name="caducidad" [(ngModel)]="farmaco.caducidad">
+      </div>
+      <button type="submit" class="btn btn-outline-warning" (click)="Editar()">Editar farmaco</button>
+    </form>
+
+  </div>
+</div>

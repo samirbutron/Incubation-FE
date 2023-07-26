@@ -1,0 +1,71 @@
+<div class="card">
+  <div class="card-header">
+    <h2>Farmacos en registro</h2>
+    <input class="form-control me-2" type="search" placeholder="Buscar por marca" aria-label="Search" [(ngModel)]="marcaBuscada" (ngModelChange)="buscarMarca()">
+    <button class="btn btn-sm btn-outline-warning me-2" type="button" (click)="stockBajo()">Stock bajo</button>
+    <button class="btn btn-sm btn-outline-info me-2" type="button" (click)="productoMasCaro()">Producto más caro</button>
+    <button class="btn btn-sm btn-outline-danger me-5" type="button" (click)="porCaducar()">Productos por caducar</button>
+    <button class="btn btn-sm btn-outline-danger" type="button" (click)="cancelarFiltro()">X</button>
+  </div>
+  <div class="card-body">
+      <table class="table table-striped">
+        <thead class="text-center">
+          <tr>
+            <th>Id</th>
+            <th>Nombre</th>
+            <th>Marca</th>
+            <th>Stock</th>
+            <th>Precio</th>
+            <th>Caducidad</th>
+            <th colspan="3">Opciones</th>
+          </tr>
+        </thead>
+        <tbody class="text-center table-striped" id="lista-farmacia">
+          <tr *ngFor="let f of farmacos">
+            <td>{{f.id}}</td>
+            <td>{{f.nombre}}</td>
+            <td>{{f.marca}}</td>
+            <td>{{f.stock}}</td>
+            <td>{{f.precio}}</td>
+            <td>{{f.caducidad}}</td>
+            <td><button type="button" class="btn btn-outline-info" data-bs-toggle="modal" data-bs-target="#modal-farmacias" (click)="ListarFarmacias(f.farmacias)">Donde encontrar </button></td>
+            <td><button type="button" class="btn btn-outline-warning" (click)="Editar(f)">Editar</button></td>
+            <td><button type="button" class="btn btn-outline-danger" (click)="Eliminar(f)">Eliminar</button></td>
+          </tr>
+        </tbody>
+      </table>
+  </div>
+</div>
+
+<div class="modal fade" id="modal-farmacias" tabindex="-1" aria-labelledby="modal-farmacias" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+          <div class="modal-header">
+              <h1 class="modal-title fs-5" id="modal-farmaciasTitle">Farmacias con este farmaco</h1>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+              <table class="table table-striped">
+                  <thead>
+                      <tr class="text-center">
+                          <th>Id</th>
+                          <th>Ciudad</th>
+                          <th>Colonia</th>
+                          <th>Calle</th>
+                          <th>Numero</th>
+                      </tr>
+                  </thead>
+                  <tbody id="lista-series-modal">
+                    <tr *ngFor="let f of farmacias">
+                      <td>{{f.id}}</td>
+                      <td>{{f.ciudad}}</td>
+                      <td>{{f.colonia}}</td>
+                      <td>{{f.calle}}</td>
+                      <td>{{f.numero}}</td>
+                    </tr>
+                  </tbody>
+              </table>
+          </div>
+      </div>
+  </div>
+</div>

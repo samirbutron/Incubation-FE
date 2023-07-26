@@ -1,0 +1,32 @@
+<div class="card">
+  <div class="card-header">
+    <h2>Guardar farmacia</h2>
+  </div>
+  <div class="card-body">
+    <form>
+      <div class="mb-3">
+        <label for="id" class="form-label">ID</label>
+        <input type="number" class="form-control" id="id" name="id" [(ngModel)]="farmacia.id">
+        <div id="IdHelp" class="form-text">El ID es único para cada farmacia</div>
+      </div>
+      <div class="mb-3">
+        <label for="ciudad" class="form-label">Ciudad</label>
+        <input type="text" class="form-control" id="ciudad" name="ciudad" [(ngModel)]="farmacia.ciudad">
+      </div>
+      <div class="mb-3">
+        <label for="colonia" class="form-label">Colonia</label>
+        <input type="text" class="form-control" id="colonia" name="colonia" [(ngModel)]="farmacia.colonia">
+      </div>
+      <div class="mb-3">
+        <label for="calle" class="form-label">Calle</label>
+        <input type="text" class="form-control" id="calle" name="calle" [(ngModel)]="farmacia.calle">
+      </div>
+      <div class="mb-3">
+        <label for="numero" class="form-label">Numero</label>
+        <input type="number" class="form-control" id="numero" name="numero" [(ngModel)]="farmacia.numero">
+      </div>
+      <button type="submit" class="btn btn-outline-success" (click)="Guardar()">Guardar farmacia</button>
+    </form>
+
+  </div>
+</div>

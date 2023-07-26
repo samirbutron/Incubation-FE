@@ -1,0 +1,36 @@
+<div class="card">
+  <div class="card-header">
+    <h2>Guardar farmaco</h2>
+  </div>
+  <div class="card-body">
+    <form>
+      <div class="mb-3">
+        <label for="id" class="form-label">ID</label>
+        <input type="number" class="form-control" id="id" name="id" [(ngModel)]="farmaco.id">
+        <div id="IdHelp" class="form-text">El ID es único para cada farmaco</div>
+      </div>
+      <div class="mb-3">
+        <label for="ciudad" class="form-label">Nombre</label>
+        <input type="text" class="form-control" id="ciudad" name="ciudad" [(ngModel)]="farmaco.nombre">
+      </div>
+      <div class="mb-3">
+        <label for="colonia" class="form-label">Marca</label>
+        <input type="text" class="form-control" id="colonia" name="colonia" [(ngModel)]="farmaco.marca">
+      </div>
+      <div class="mb-3">
+        <label for="calle" class="form-label">Stock</label>
+        <input type="number" class="form-control" id="calle" name="calle" [(ngModel)]="farmaco.stock">
+      </div>
+      <div class="mb-3">
+        <label for="calle" class="form-label">Precio</label>
+        <input type="number" class="form-control" id="calle" name="calle" [(ngModel)]="farmaco.precio">
+      </div>
+      <div class="mb-3">
+        <label for="calle" class="form-label">Caducidad</label>
+        <input type="date" class="form-control" id="calle" name="calle" [(ngModel)]="farmaco.caducidad">
+      </div>
+      <button type="submit" class="btn btn-outline-success" (click)="Guardar()">Guardar farmaco</button>
+    </form>
+
+  </div>
+</div>
